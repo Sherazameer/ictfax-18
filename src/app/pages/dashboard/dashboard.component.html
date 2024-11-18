@@ -1,0 +1,262 @@
+<h3 style="text-align:center">{{'Dashboard.MainHeading' | translate}}</h3><br>
+<div class="row">
+
+  <div class="col-xxxl-6 col-md-6" (click)="cardClick('outfax')">
+    <ngx-status-card title="{{'Dashboard.outbound_fax' | translate}}" type="primary">
+      <span style="font-size:30px">{{outfax_total}}</span>
+    </ngx-status-card>
+  </div>
+
+  <div class="col-xxxl-6 col-md-6" (click)="cardClick('infax')">
+    <ngx-status-card title="{{'Dashboard.inbound_fax' | translate}}" type="success">
+      <span style="font-size:30px">{{infax_total}}</span>
+    </ngx-status-card>
+  </div>
+
+
+  <div class="col-xxxl-6 col-md-6" (click)="cardClick('dids')">
+    <ngx-status-card title="{{'Dashboard.dids' | translate}}" type="info">
+        <span style="font-size:30px">{{did_total}}</span>
+    </ngx-status-card>
+  </div>
+
+  <div class="col-xxxl-6 col-md-6" (click)="cardClick('users')">
+    <ngx-status-card title="{{'Dashboard.users' | translate}}" type="warning">
+      <span style="font-size:30px">{{user_total}}</span>
+    </ngx-status-card>
+  </div>
+</div>
+
+<!--
+<nb-card>
+  <nb-card-header style="font-size:20px">
+    Inbound Fax and Outbound Fax
+  </nb-card-header>
+  <nb-card-body>
+    ICTFax supports both inbound and outbound fax. <br><br>
+    <div class="row">
+      <div class="col-xxxl-9 col-xxl-6 col-md-5">
+        <nb-card>
+          <nb-card-header>
+            Outbound Fax
+          </nb-card-header>
+          <nb-card-body>
+            This dials number from a contact list and on answer transfer fax documents.
+            <a routerLink = "/pages/sendfax/sendfax/new" >Send Fax</a>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-xxxl-9 col-xxl-6 col-md-5">
+        <nb-card>
+          <nb-card-header>
+            Inbound Fax
+          </nb-card-header>
+          <nb-card-body>
+            View all of your Inbound Fax and download them. View all of your inbound Faxes here.
+            <a routerLink = "/pages/infax" >View Received Fax</a>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header style="font-size:20px">
+    Extension and DID Support
+  </nb-card-header>
+  <nb-card-body>
+    ICTFax supports both Extension and DID. <br><br>
+    <div class="row">
+      <div class="col-xxxl-9 col-xxl-6 col-md-5">
+        <nb-card>
+          <nb-card-header>
+            Trunk
+          </nb-card-header>
+          <nb-card-body>
+            ICTFax has added feature of Trunk Support. You can configure and edit the Trunk.
+            <a routerLink = "/pages/provider/provider" >Configure Trunk</a>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-xxxl-9 col-xxl-6 col-md-5">
+        <nb-card>
+          <nb-card-header>
+            DID
+          </nb-card-header>
+          <nb-card-body>
+            ICTFax has added feature of DID Support. You can assign DID, Create DIDs in batch and import the DID List.
+            <a routerLink = "/pages/did/did" >View DIDs.</a>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+!-->
+
+<nb-card *ngIf="users">
+  <nb-card-header>
+    {{'user.list' | translate}}
+  </nb-card-header>
+
+  <nb-card-body>
+    <br>
+      <table [nbTreeGrid]="UserDataSource" [nbSort]="UserDataSource">
+        <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="displayedColumns"></tr>
+        <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: displayedColumns"></tr>
+          <ng-container nbTreeGridColumnDef="user_id">
+            <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{ 'general.ID' | translate}}</th>
+            <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data.user_id}}</td>
+          </ng-container>
+          <ng-container nbTreeGridColumnDef="username">
+            <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{ 'user.Username' | translate }}</th>
+            <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.username}}</td>
+          </ng-container>
+          <ng-container nbTreeGridColumnDef="first_name">
+            <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>{{ 'user.fname' | translate}}</th>
+            <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.first_name}}</td>
+          </ng-container>
+          <ng-container nbTreeGridColumnDef="last_name">
+            <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>{{ 'user.lname' | translate}}</th>
+            <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.last_name}}</td>
+          </ng-container>
+        <ng-container nbTreeGridColumnDef="email">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>{{ 'User.email' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.email}}</td>
+        </ng-container>
+      </table>
+      <div style="padding: 30px; display: flex; justify-content: flex-end;">
+        <span style="text-align: center; padding-top: 10px;">Items per page: &nbsp;&nbsp;</span>
+        <nb-select [(ngModel)]="aUser_pageSize" (ngModelChange)="getpaginateUser($event)">
+          <nb-option *ngFor="let option of aUser_page" [value]="option">{{ option }}</nb-option>
+        </nb-select>
+        <div style="padding-top: 10px;">
+          <nb-icon   style="margin: 0 25px;"   icon="arrowhead-left-outline" (click)="aUser_startIndex > 0 ? getpaginateUser('previous') : null" [ngClass]="{'disabled-icon': aUser_startIndex === 0}"></nb-icon> 
+          <span>Page {{ aUser_currentPage }} of {{ aUser_total_pages }}</span>
+          <nb-icon  style="margin: 0 25px;"  icon="arrowhead-right-outline" (click)="aUser_startIndex + aUser_pageSize < aUser?.length ? getpaginateUser('next') : null" [ngClass]="{'disabled-icon': aUser_startIndex + aUser_pageSize >= aUser?.length}"> </nb-icon>
+          <span *ngIf="aUser?.length > 0"> 
+            | Showing {{ aUser_startIndex }} - {{ aUser_minimumItems }} of {{ user_length }} items
+          </span>
+        </div>
+      </div> 
+  </nb-card-body>
+</nb-card>
+<nb-card *ngIf="dids">
+  <nb-card-header>{{'dids.list' | translate}}
+  </nb-card-header>
+  <nb-card-body>
+    <br>
+      <table [nbTreeGrid]="DIDDataSource" [nbSort]="DIDDataSource">
+        <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="did_displayedColumns"></tr>
+        <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: did_displayedColumns"></tr>
+        <ng-container nbTreeGridColumnDef="phone">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{ 'dids.number' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data?.phone}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="first_name">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{ 'my_dids.title' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data.first_name}}</td>
+        </ng-container>
+      </table>
+      <div style="padding: 30px; display: flex; justify-content: flex-end;">
+        <span style="text-align: center; padding-top: 10px;">Items per page: &nbsp;&nbsp;</span>
+        <nb-select [(ngModel)]="aDID_pageSize" (ngModelChange)="getpaginateDID($event)">
+          <nb-option *ngFor="let option of aDID_page" [value]="option">{{ option }}</nb-option>
+        </nb-select>
+        <div style="padding-top: 10px;">
+          <nb-icon   style="margin: 0 25px;"   icon="arrowhead-left-outline" (click)="aDID_startIndex > 0 ? getpaginateDID('previous') : null" [ngClass]="{'disabled-icon': aDID_startIndex === 0}"></nb-icon>  
+          <span>Page {{ aDID_currentPage }} of {{ aDID_total_pages }}</span>
+          <nb-icon  style="margin: 0 25px;"  icon="arrowhead-right-outline" (click)="aDID_startIndex + aDID_pageSize < aDID?.length ? getpaginateDID('next') : null" [ngClass]="{'disabled-icon': aDID_startIndex + aDID_pageSize >= aDID?.length}"> </nb-icon>
+          <span *ngIf="aDID?.length > 0"> 
+            | Showing {{ aDID_startIndex }} - {{ aDID_minimumItems }} of {{ did_length }} items
+          </span>
+        </div>
+      </div> 
+  </nb-card-body>
+</nb-card>
+<nb-card *ngIf="outfax">
+  <nb-card-header>{{'Dashboard.outbound_fax' | translate}}
+  </nb-card-header>
+  <nb-card-body>
+    <br>
+      <table [nbTreeGrid]="SendFaxDatabaSource" [nbSort]="SendFaxDatabaSource">
+        <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="senfax_displayedColumns"></tr>
+        <tr nbTreeGridRow *nbTreeGridRowDef="let row; Columns: senfax_displayedColumns"></tr>
+        <ng-container nbTreeGridColumnDef="transmission_id">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'general.ID' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data.transmission_id}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="phone">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'outbound_fax.phone_num' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data.contact_phone}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="Timestamp">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'outbound_fax.date_time' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.last_run * 1000 | date:'yyyy-MM-dd HH:mm:ss a'}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="username">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'outbound_fax.username' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.username}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="status">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'transmission.status' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row" class="{{row.data.status}}"> {{row.data.status}} </td>
+        </ng-container>
+      </table>
+      <div style="padding: 30px; display: flex; justify-content: flex-end;">
+        <span style="text-align: center; padding-top: 10px;">Items per page: &nbsp;&nbsp;</span>
+        <nb-select [(ngModel)]="aSendFax_pageSize" (ngModelChange)="getpaginateSendFax($event)">
+          <nb-option *ngFor="let option of aSendFax_page" [value]="option">{{ option }}</nb-option>
+        </nb-select>
+        <div style="padding-top: 10px;">
+          <nb-icon   style="margin: 0 25px;"   icon="arrowhead-left-outline" (click)="aSendFax_startIndex > 0 ? getpaginateSendFax('previous') : null" [ngClass]="{'disabled-icon': aSendFax_startIndex === 0}"></nb-icon>  
+          <span>Page {{ aSendFax_currentPage }} of {{ aSendFax_total_pages }}</span>
+          <nb-icon style="margin: 0 25px;" icon="arrowhead-right-outline" (click)="aSendFax_startIndex + aSendFax_pageSize < aSendFax?.length ? getpaginateSendFax('next') : null" [ngClass]="{'disabled-icon': aSendFax_startIndex + aSendFax_pageSize >= aSendFax?.length}"></nb-icon>
+          <span *ngIf="aSendFax?.length > 0"> 
+            | Showing {{ aSendFax_startIndex }} - {{ aSendFax_minimumItems }} of {{ sendfax_length }} items
+          </span>
+        </div>
+      </div> 
+  </nb-card-body>
+</nb-card>
+<nb-card *ngIf="infax">
+  <nb-card-header>{{'general.inbound_fax' | translate}}
+  </nb-card-header>
+  <nb-card-body>
+      <table [nbTreeGrid]="InFaxDataSource" [nbSort]="InFaxDataSource">
+        <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="infax_displayedColumns"></tr>
+        <tr nbTreeGridRow *nbTreeGridRowDef="let row; Columns: infax_displayedColumns"></tr>
+        <ng-container nbTreeGridColumnDef="transmission_id">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'general.ID' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.transmission_id}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="phone">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'outbound_fax.phone_num' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data.contact_phone}} </td>
+        </ng-container>
+       <ng-container nbTreeGridColumnDef="status">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'transmission.status' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.status}}</td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="Timestamp">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef [nbSortHeader]>{{'outbound_fax.date_time' | translate }}</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row"> {{row.data.last_run * 1000 | date:'yyyy-MM-dd HH:mm:ss a'}}</td>
+        </ng-container>
+      </table>
+      <div style="padding: 30px; display: flex; justify-content: flex-end;">
+        <span style="text-align: center; padding-top: 10px;">Items per page: &nbsp;&nbsp;</span>
+        <nb-select [(ngModel)]="aInFax_pageSize" (ngModelChange)="getpaginateInFax($event)">
+          <nb-option *ngFor="let option of aInFax_page" [value]="option">{{ option }}</nb-option>
+        </nb-select>
+        <div style="padding-top: 10px;">
+          <nb-icon   style="margin: 0 25px;"   icon="arrowhead-left-outline" (click)="aInFax_startIndex > 0 ? getpaginateInFax('previous') : null" [ngClass]="{'disabled-icon': aInFax_startIndex === 0}"></nb-icon>  
+          <span>Page {{ aInFax_currentPage }} of {{ aInFax_total_pages }}</span>
+          <nb-icon  style="margin: 0 25px;"  icon="arrowhead-right-outline" (click)="aInFax_startIndex + aInFax_pageSize < aInFax?.length ? getpaginateInFax('next') : null" [ngClass]="{'disabled-icon': aInFax_startIndex + aInFax_pageSize >= aInFax?.length}"> </nb-icon>
+          <span *ngIf="aInFax?.length > 0"> 
+            | Showing {{ aInFax_startIndex }} - {{ aInFax_minimumItems }} of {{ infax_length }} items
+          </span>
+        </div>
+      </div> 
+  </nb-card-body>
+</nb-card>

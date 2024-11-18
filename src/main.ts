@@ -1,0 +1,34 @@
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import '@angular/compiler';
+
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+// platformBrowserDynamic().bootstrapModule(AppModule)
+//   .catch(err => console.error(err));
+const bootstrap = () => platformBrowserDynamic()
+  .bootstrapModule(AppModule)
+  .catch(err => console.error(err));
+
+if (module['hot']) {
+  module['hot'].accept();
+  module['hot'].dispose(() => {
+    const appRef = module['ngRef'];
+    if (appRef) {
+      appRef.destroy();
+    }
+  });
+}
+
+bootstrap();
