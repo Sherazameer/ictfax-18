@@ -11,7 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "FormsSendFaxComponent": () => (/* binding */ FormsSendFaxComponent)
 /* harmony export */ });
-/* harmony import */ var _home_ictvision_Documents_todowm5_ictfax_pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _home_ictvision_ictfax_18_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var rxjs_add_operator_startWith__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/add/operator/startWith */ 20137);
 /* harmony import */ var rxjs_add_observable_merge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/add/observable/merge */ 8961);
 /* harmony import */ var rxjs_add_operator_toPromise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/add/operator/toPromise */ 84640);
@@ -262,7 +262,7 @@ class FormsSendFaxComponent {
   }
   getFaxlist() {
     var _this = this;
-    return (0,_home_ictvision_Documents_todowm5_ictfax_pro_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_home_ictvision_ictfax_18_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.sendfax_service.get_OutFaxTransmissionList().then(data => {
         _this.aSendFax = data.sort((a, b) => b.transmission_id - a.transmission_id);
         _this.length = data.length;

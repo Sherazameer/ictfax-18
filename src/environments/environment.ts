@@ -10,6 +10,5 @@
 
 export const environment = {
   production: false,
-  // API_URL: 'api',
-  API_URL: 'https://demo.ictfax.com/api',
+  API_URL: 'api',
 };
